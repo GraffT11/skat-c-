@@ -1,2 +1,2 @@
-# skat-c-
+# skat in c++
 For University, the German game Skat in C++
