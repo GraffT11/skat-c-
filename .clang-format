@@ -1,14 +1,5 @@
-# Das ist die Basis (Google Style mag Klammern oben)
 BasedOnStyle: Google
-
-# Hier erlauben wir längere Zeilen, damit er Listen nicht sofort umbricht
 ColumnLimit: 120
-
-# Einrückung auf 4 Leerzeichen (Standard)
 IndentWidth: 4
-
-# Klammern sollen an der Zeile "kleben" (also oben bleiben)
 BreakBeforeBraces: Attach
-
-# Erlaubt kurze Blöcke in einer Zeile (z.B. leere Funktionen)
 AllowShortFunctionsOnASingleLine: Empty
