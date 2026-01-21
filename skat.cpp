@@ -111,5 +111,30 @@ int main() {
         std::cout << "(" << i << ")" << s3.hand[i].farbe << " " << s3.hand[i].name << std::endl;
     }
 
+    std::cout << "Der Skat: " << std::endl;
+    for (int i = 0; i < skat.size(); i++) {
+        std::cout << "(" << i << ")" << skat[i].farbe << " " << skat[i].name << std::endl;
+    };
+
+    std::cout << "Lass das Spiel beginnen. Spieler 1 startet." << std::endl;
+
+    for (int s = 0; s < 10; s++) {
+        std::vector<Karte> stich;
+        int wahl;
+        std::cout << "Spieler 1 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
+        std::cout << "Hand von " << s1.name << ":" << std::endl;
+        for (int i = 0; i < s1.hand.size(); i++) {
+            std::cout << "(" << i << ")" << s1.hand[i].farbe << " " << s1.hand[i].name << std::endl;
+        }
+        std::cin >> wahl;
+        if (wahl >= 0 && wahl < s1.hand.size()) {
+            stich.push_back(s1.hand[wahl]);
+            s1.hand.erase(s1.hand.begin() + wahl);
+            std::cout << "Spieler 1 legt die Karte " << wahl << "!" << std::endl;
+        } else {
+            std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)" << std::endl;
+        };
+    }
+
     return 0;
 }
