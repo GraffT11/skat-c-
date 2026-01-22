@@ -4,6 +4,8 @@
 #include <random>
 #include <string>
 
+// Der Aufbaue der Skat-Karten
+
 struct Karte {
     std::string name;
     std::string farbe;
@@ -11,6 +13,8 @@ struct Karte {
     int staerke;
     int farbeID;
 };
+
+// Automatische Deck-Erstellung
 
 std::vector<Karte> erstelleDeck() {
     std::vector<Karte> deck;
@@ -58,6 +62,8 @@ std::vector<Karte> erstelleDeck() {
     return deck;
 };
 
+// Random Faktor des Geräts nehmen, um das Deck zu mischeln
+
 void mischDeck(std::vector<Karte>& deck) {
     std::random_device rd;
     unsigned seed = rd();
@@ -65,11 +71,15 @@ void mischDeck(std::vector<Karte>& deck) {
     std::shuffle(deck.begin(), deck.end(), generator);
 }
 
+// Der Aufbau der Spieler
+
 struct Spieler {
     std::string name;
     std::vector<Karte> hand;
     std::vector<Karte> gewonneneStiche;
 };
+
+// Man checkt, ob der Spieler, die Karte legen darf oder nicht
 
 bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> hand) {
     if (stich.size() == 0) {
@@ -85,6 +95,8 @@ bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> ha
         return true;
     }
 }
+
+// Man checkt, wer den Stich am Ende gewinnt
 
 int bestimmeStichGewinner(std::vector<Karte> stich) {
     int gewinnerIndex = 0;
@@ -106,6 +118,8 @@ int bestimmeStichGewinner(std::vector<Karte> stich) {
     }
     return gewinnerIndex;
 }
+
+// Das Spiel selber
 
 int main() {
     std::vector<Karte> deck = erstelleDeck();
@@ -131,6 +145,8 @@ int main() {
             skat.push_back(deck[i]);
         }
     }
+
+    // Ausgabe der Hände
 
     std::cout << "Hand von " << s1.name << ":" << std::endl;
     std::cout << std::endl;
@@ -158,6 +174,8 @@ int main() {
     std::cout << std::endl;
     std::cout << "Lass das Spiel beginnen. Spieler 1 startet." << std::endl;
     std::cout << std::endl;
+
+    // Eine for-Schleife für das Spiel
 
     for (int s = 0; s < 10; s++) {
         std::vector<Karte> stich;
@@ -198,6 +216,7 @@ int main() {
         s1.hand.erase(s1.hand.begin() + wahl);
 
         // Spieler 2 am Zug
+
         zugGueltig = false;
         do {
             std::cout << "Spieler 2 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
@@ -233,6 +252,7 @@ int main() {
         s2.hand.erase(s2.hand.begin() + wahl);
 
         // Spieler 3 am Zug
+
         zugGueltig = false;
         do {
             std::cout << "Spieler 3 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
