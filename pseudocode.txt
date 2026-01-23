@@ -1,5 +1,4 @@
 Noch zu fehlende Features:
-- Punkte jedes Stichs zusammenrechnen und am Ende ausgeben
-- Dem Gewinner des letzten Stichs die Punkte des Skats dazurechnen
-- Spielverlierer bestimmen und ausgeben
+- Eingabe von Buchstaben nicht zum crash bringen lassen
 (- Skat am Anfang herumgeben lassen wie im echten Ramsch)
+(- Falls geschoben wird Punkte verdoppeln)
