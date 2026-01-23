@@ -6,7 +6,8 @@
 
 // Der Aufbaue der Skat-Karten
 
-struct Karte {
+struct Karte
+{
     std::string name;
     std::string farbe;
     int augen;
@@ -16,42 +17,61 @@ struct Karte {
 
 // Automatische Deck-Erstellung
 
-std::vector<Karte> erstelleDeck() {
+std::vector<Karte> erstelleDeck()
+{
     std::vector<Karte> deck;
     std::vector<std::string> farben = {"Eichel", "Rot", "Gruen", "Schellen"};
     std::vector<std::string> namen = {"Sieben", "Acht", "Neun", "Ober", "Koenig", "Zehn", "Ass", "Unter"};
-    for (int f = 0; f < farben.size(); f++) {
-        for (int n = 0; n < namen.size(); n++) {
+    for (int f = 0; f < farben.size(); f++)
+    {
+        for (int n = 0; n < namen.size(); n++)
+        {
             Karte neueKarte;
             neueKarte.farbe = farben[f];
             neueKarte.name = namen[n];
             neueKarte.augen = 0;
             neueKarte.staerke = 0;
-            if (neueKarte.name == "Unter") {
+            if (neueKarte.name == "Unter")
+            {
                 neueKarte.farbeID = 4;
                 neueKarte.staerke = 10 + (3 - f);
                 neueKarte.augen = 2;
-            } else {
+            }
+            else
+            {
                 neueKarte.farbeID = f;
-                if (neueKarte.name == "Sieben") {
+                if (neueKarte.name == "Sieben")
+                {
                     neueKarte.staerke = 0;
                     neueKarte.augen = 0;
-                } else if (neueKarte.name == "Acht") {
+                }
+                else if (neueKarte.name == "Acht")
+                {
                     neueKarte.staerke = 1;
                     neueKarte.augen = 0;
-                } else if (neueKarte.name == "Neun") {
+                }
+                else if (neueKarte.name == "Neun")
+                {
                     neueKarte.staerke = 2;
                     neueKarte.augen = 0;
-                } else if (neueKarte.name == "Ober") {
+                }
+                else if (neueKarte.name == "Ober")
+                {
                     neueKarte.staerke = 3;
                     neueKarte.augen = 3;
-                } else if (neueKarte.name == "Koenig") {
+                }
+                else if (neueKarte.name == "Koenig")
+                {
                     neueKarte.staerke = 4;
                     neueKarte.augen = 4;
-                } else if (neueKarte.name == "Zehn") {
+                }
+                else if (neueKarte.name == "Zehn")
+                {
                     neueKarte.staerke = 5;
                     neueKarte.augen = 10;
-                } else if (neueKarte.name == "Ass") {
+                }
+                else if (neueKarte.name == "Ass")
+                {
                     neueKarte.staerke = 6;
                     neueKarte.augen = 11;
                 }
@@ -64,7 +84,8 @@ std::vector<Karte> erstelleDeck() {
 
 // Random Faktor des Geräts nehmen, um das Deck zu mischen
 
-void mischDeck(std::vector<Karte>& deck) {
+void mischDeck(std::vector<Karte> &deck)
+{
     std::random_device rd;
     unsigned seed = rd();
     std::default_random_engine generator(seed);
@@ -73,7 +94,8 @@ void mischDeck(std::vector<Karte>& deck) {
 
 // Der Aufbau der Spieler
 
-struct Spieler {
+struct Spieler
+{
     std::string name;
     std::vector<Karte> hand;
     std::vector<Karte> gewonneneStiche;
@@ -81,14 +103,22 @@ struct Spieler {
 
 // Man checkt, ob der Spieler, die Karte legen darf oder nicht
 
-bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> hand) {
-    if (stich.size() == 0) {
+bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> hand)
+{
+    if (stich.size() == 0)
+    {
         return true;
-    } else if (karte.farbeID == stich[0].farbeID) {
+    }
+    else if (karte.farbeID == stich[0].farbeID)
+    {
         return true;
-    } else {
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand[i].farbeID == stich[0].farbeID) {
+    }
+    else
+    {
+        for (int i = 0; i < hand.size(); i++)
+        {
+            if (hand[i].farbeID == stich[0].farbeID)
+            {
                 return false;
             }
         }
@@ -98,19 +128,29 @@ bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> ha
 
 // Man checkt, wer den Stich am Ende gewinnt
 
-int bestimmeStichGewinner(std::vector<Karte> stich) {
+int bestimmeStichGewinner(std::vector<Karte> stich)
+{
     int gewinnerIndex = 0;
 
-    for (int i = 1; i < 3; i++) {
-        if (stich[i].farbeID == 4) {
-            if (stich[gewinnerIndex].farbeID != 4) {
-                gewinnerIndex = i;
-            } else if (stich[i].staerke > stich[gewinnerIndex].staerke) {
+    for (int i = 1; i < 3; i++)
+    {
+        if (stich[i].farbeID == 4)
+        {
+            if (stich[gewinnerIndex].farbeID != 4)
+            {
                 gewinnerIndex = i;
             }
-        } else if (stich[i].farbeID == stich[0].farbeID) {
-            if (stich[gewinnerIndex].farbeID != 4) {
-                if (stich[i].staerke > stich[gewinnerIndex].staerke) {
+            else if (stich[i].staerke > stich[gewinnerIndex].staerke)
+            {
+                gewinnerIndex = i;
+            }
+        }
+        else if (stich[i].farbeID == stich[0].farbeID)
+        {
+            if (stich[gewinnerIndex].farbeID != 4)
+            {
+                if (stich[i].staerke > stich[gewinnerIndex].staerke)
+                {
                     gewinnerIndex = i;
                 }
             }
@@ -119,9 +159,14 @@ int bestimmeStichGewinner(std::vector<Karte> stich) {
     return gewinnerIndex;
 }
 
+int bestimmeSpielGewinner(std::vector<Karte> stich)
+{
+}
+
 // Das Spiel selber
 
-int main() {
+int main()
+{
     std::vector<Karte> deck = erstelleDeck();
     mischDeck(deck);
 
@@ -151,14 +196,22 @@ int main() {
 
     std::vector<Karte> skat;
 
-    for (int i = 0; i < 32; i++) {
-        if (i < 10) {
+    for (int i = 0; i < 32; i++)
+    {
+        if (i < 10)
+        {
             s1.hand.push_back(deck[i]);
-        } else if (i < 20) {
+        }
+        else if (i < 20)
+        {
             s2.hand.push_back(deck[i]);
-        } else if (i < 30) {
+        }
+        else if (i < 30)
+        {
             s3.hand.push_back(deck[i]);
-        } else {
+        }
+        else
+        {
             skat.push_back(deck[i]);
         }
     }
@@ -168,24 +221,28 @@ int main() {
     std::cout << "Spieler " << spieler1Name << " du spielst als erstes aus!" << std::endl;
     std::cout << std::endl;
 
-    std::vector<Spieler*> spielerListe = {&s1, &s2, &s3};
+    std::vector<Spieler *> spielerListe = {&s1, &s2, &s3};
     int vorhand = 0;
     std::vector<std::string> positionen = {"Vorhand", "Mittelhand", "Hinterhand"};
 
-    for (int s = 0; s < 10; s++) {
+    for (int s = 0; s < 10; s++)
+    {
         std::vector<Karte> stich;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             int aktuellerSpielerIndex = (vorhand + i) % 3;
-            Spieler* aktuellerSpieler = spielerListe[aktuellerSpielerIndex];
+            Spieler *aktuellerSpieler = spielerListe[aktuellerSpielerIndex];
             Karte gespielteKarte;
             bool zugGueltig = false;
             int wahl;
-            do {
+            do
+            {
                 std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " ist dran." << std::endl;
                 std::cout << std::endl;
                 std::cout << "Hand von " << aktuellerSpieler->name << ":" << std::endl;
                 std::cout << std::endl;
-                for (int k = 0; k < aktuellerSpieler->hand.size(); k++) {
+                for (int k = 0; k < aktuellerSpieler->hand.size(); k++)
+                {
                     std::cout << "(" << k << ") " << aktuellerSpieler->hand[k].farbe << " "
                               << aktuellerSpieler->hand[k].name << std::endl;
                 }
@@ -193,20 +250,28 @@ int main() {
 
                 std::cin >> wahl;
 
-                if (wahl >= 0 && wahl < aktuellerSpieler->hand.size()) {
+                if (wahl >= 0 && wahl < aktuellerSpieler->hand.size())
+                {
                     gespielteKarte = aktuellerSpieler->hand[wahl];
-                    if (darfKarteLegen(gespielteKarte, stich, aktuellerSpieler->hand) == true) {
+                    if (darfKarteLegen(gespielteKarte, stich, aktuellerSpieler->hand) == true)
+                    {
                         zugGueltig = true;
-                    } else if (stich[0].farbeID == 4) {
+                    }
+                    else if (stich[0].farbeID == 4)
+                    {
                         std::cout << "Du musst Trumpf bedienen!" << std::endl;
                         std::cout << std::endl;
                         zugGueltig = false;
-                    } else {
+                    }
+                    else
+                    {
                         std::cout << "Du musst " << stich[0].farbe << " bedienen!" << std::endl;
                         std::cout << std::endl;
                         zugGueltig = false;
                     }
-                } else {
+                }
+                else
+                {
                     std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)"
                               << std::endl;
                 }
