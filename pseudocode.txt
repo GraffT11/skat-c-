@@ -1,17 +1,5 @@
-Definiere 32 Spielkarten unterteilt in Wertigkeit (Ass, Zehn, König, Dame, 9, 8, 7), Farbe (Buben hier als fünfte Farbe definieren) und wie viel Punkte jede Karte hat
-Dazu jeder Karte einen Stichwert geben (7=1, 8=2, 9=3, D=4, K=5, T=6, A=7, Buben in Reihenfolge=8-11, nicht bekannte Farbe=0)
-Stelle sicher, dass Buben in der Reihenfolge Kreuz/Pik/Herz/Karo stechen
-Liste 32 Karten auf
-    verteile Sie random an drei Leute, zwei Karten müssen in den Skat
-    Gebe diese Karten für jeden Spieler einzeln aus
-    Starte das eigentliche Spiele
-Spieler 1 darf in der ersten Runde eine beliebe Karte legen
-    Spieler 2 legt eine Karte, checke, ob er sie spielen darf (Farbe bedienen)
-    Wenn Spieler 2 sie spielen darf, spiele die ausgewählte Karte, wenn nicht gebe Fehlermeldung aus mit "Du musst bedienen"
-    Spieler 3 das gleiche
-Checke welche Karte die höchste Stichkraft hat (Erst Trumpf, dann bediente Karten in der Reihenfolge)
-Checke, wer den Stich bekommt und füge die gewonnen Punkte hinzu
-Der Spieler, der den Stich bekommen hat, spielt aus
-Wiederhole das so lange, bis keiner mehr Karten hat
-Rechne die Karten aus dem Skat dem Spieler mit dem letzten Stich zu
-Zeige die Punkte für jeden Spieler an und sage wer die meisten Punkte hat und damit verloren hat
+Noch zu fehlende Features:
+- Punkte jedes Stichs zusammenrechnen und am Ende ausgeben
+- Dem Gewinner des letzten Stichs die Punkte des Skats dazurechnen
+- Spielverlierer bestimmen und ausgeben
+(- Skat am Anfang herumgeben lassen wie im echten Ramsch)
