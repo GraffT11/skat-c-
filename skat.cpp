@@ -62,7 +62,7 @@ std::vector<Karte> erstelleDeck() {
     return deck;
 };
 
-// Random Faktor des Geräts nehmen, um das Deck zu mischeln
+// Random Faktor des Geräts nehmen, um das Deck zu mischen
 
 void mischDeck(std::vector<Karte>& deck) {
     std::random_device rd;
@@ -125,12 +125,29 @@ int main() {
     std::vector<Karte> deck = erstelleDeck();
     mischDeck(deck);
 
+    // Ersteinmal den Spieler nach seinem Namen Fragen
+
+    std::cout << "Spieler 1, wie moechtest du heissen?" << std::endl;
+    std::cout << std::endl;
+    std::string spieler1Name;
+    std::cin >> spieler1Name;
+
+    std::cout << "Spieler 2, wie moechtest du heissen?" << std::endl;
+    std::cout << std::endl;
+    std::string spieler2Name;
+    std::cin >> spieler2Name;
+
+    std::cout << "Spieler 3, wie moechtest du heissen?" << std::endl;
+    std::cout << std::endl;
+    std::string spieler3Name;
+    std::cin >> spieler3Name;
+
     Spieler s1;
-    s1.name = "Spieler 1";
+    s1.name = spieler1Name;
     Spieler s2;
-    s2.name = "Spieler 2";
+    s2.name = spieler2Name;
     Spieler s3;
-    s3.name = "Spieler 3";
+    s3.name = spieler3Name;
 
     std::vector<Karte> skat;
 
@@ -146,153 +163,68 @@ int main() {
         }
     }
 
-    // Ausgabe der Hände
-
-    std::cout << "Hand von " << s1.name << ":" << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < s1.hand.size(); i++) {
-        std::cout << "(" << i << ")" << s1.hand[i].farbe << " " << s1.hand[i].name << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << "Hand von " << s2.name << ":" << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < s2.hand.size(); i++) {
-        std::cout << "(" << i << ")" << s2.hand[i].farbe << " " << s2.hand[i].name << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << "Hand von " << s3.name << ":" << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < s3.hand.size(); i++) {
-        std::cout << "(" << i << ")" << s3.hand[i].farbe << " " << s3.hand[i].name << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << "Der Skat: " << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < skat.size(); i++) {
-        std::cout << "(" << i << ")" << skat[i].farbe << " " << skat[i].name << std::endl;
-    };
-    std::cout << std::endl;
-    std::cout << "Lass das Spiel beginnen. Spieler 1 startet." << std::endl;
-    std::cout << std::endl;
-
     // Eine for-Schleife für das Spiel
+
+    std::cout << "Spieler " << spieler1Name << " du spielst als erstes aus!" << std::endl;
+    std::cout << std::endl;
+
+    std::vector<Spieler*> spielerListe = {&s1, &s2, &s3};
+    int vorhand = 0;
+    std::vector<std::string> positionen = {"Vorhand", "Mittelhand", "Hinterhand"};
 
     for (int s = 0; s < 10; s++) {
         std::vector<Karte> stich;
-        Karte gespielteKarte;
-        bool zugGueltig = false;
-        int wahl;
-        do {
-            std::cout << "Spieler 1 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Hand von " << s1.name << ":" << std::endl;
-            std::cout << std::endl;
-            for (int i = 0; i < s1.hand.size(); i++) {
-                std::cout << "(" << i << ")" << s1.hand[i].farbe << " " << s1.hand[i].name << std::endl;
-            }
-            std::cout << std::endl;
-            std::cin >> wahl;
-            if (wahl >= 0 && wahl < s1.hand.size()) {
-                gespielteKarte = s1.hand[wahl];
-                if (darfKarteLegen(gespielteKarte, stich, s1.hand) == true) {
-                    zugGueltig = true;
-                } else if (stich[0].farbeID == 4) {
-                    std::cout << "Du musst Trumpf bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
-                } else {
-                    std::cout << "Du musst " << stich[0].farbe << " bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
+        for (int i = 0; i < 3; i++) {
+            int aktuellerSpielerIndex = (vorhand + i) % 3;
+            Spieler* aktuellerSpieler = spielerListe[aktuellerSpielerIndex];
+            Karte gespielteKarte;
+            bool zugGueltig = false;
+            int wahl;
+            do {
+                std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " ist dran." << std::endl;
+                std::cout << std::endl;
+                std::cout << "Hand von " << aktuellerSpieler->name << ":" << std::endl;
+                std::cout << std::endl;
+                for (int k = 0; k < aktuellerSpieler->hand.size(); k++) {
+                    std::cout << "(" << k << ") " << aktuellerSpieler->hand[k].farbe << " "
+                              << aktuellerSpieler->hand[k].name << std::endl;
                 }
-            } else {
-                std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)" << std::endl;
-            };
-        } while (zugGueltig == false);
-        std::cout << "Spieler 1 legt die Karte \"" << gespielteKarte.farbe << " " << gespielteKarte.name << "\""
-                  << std::endl;
-        std::cout << std::endl;
-        stich.push_back(gespielteKarte);
-        s1.hand.erase(s1.hand.begin() + wahl);
+                std::cout << std::endl;
 
-        // Spieler 2 am Zug
+                std::cin >> wahl;
 
-        zugGueltig = false;
-        do {
-            std::cout << "Spieler 2 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Hand von " << s2.name << ":" << std::endl;
-            std::cout << std::endl;
-            for (int i = 0; i < s2.hand.size(); i++) {
-                std::cout << "(" << i << ")" << s2.hand[i].farbe << " " << s2.hand[i].name << std::endl;
-            }
-            std::cout << std::endl;
-            std::cin >> wahl;
-            if (wahl >= 0 && wahl < s2.hand.size()) {
-                gespielteKarte = s2.hand[wahl];
-                if (darfKarteLegen(gespielteKarte, stich, s2.hand) == true) {
-                    zugGueltig = true;
-                } else if (stich[0].farbeID == 4) {
-                    std::cout << "Du musst Trumpf bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
+                if (wahl >= 0 && wahl < aktuellerSpieler->hand.size()) {
+                    gespielteKarte = aktuellerSpieler->hand[wahl];
+                    if (darfKarteLegen(gespielteKarte, stich, aktuellerSpieler->hand) == true) {
+                        zugGueltig = true;
+                    } else if (stich[0].farbeID == 4) {
+                        std::cout << "Du musst Trumpf bedienen!" << std::endl;
+                        std::cout << std::endl;
+                        zugGueltig = false;
+                    } else {
+                        std::cout << "Du musst " << stich[0].farbe << " bedienen!" << std::endl;
+                        std::cout << std::endl;
+                        zugGueltig = false;
+                    }
                 } else {
-                    std::cout << "Du musst " << stich[0].farbe << " bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
+                    std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)"
+                              << std::endl;
                 }
-            } else {
-                std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)" << std::endl;
-            };
-        } while (zugGueltig == false);
-        std::cout << "Spieler 2 legt die Karte \"" << gespielteKarte.farbe << " " << gespielteKarte.name << "\""
-                  << std::endl;
-        std::cout << std::endl;
-        stich.push_back(gespielteKarte);
-        s2.hand.erase(s2.hand.begin() + wahl);
 
-        // Spieler 3 am Zug
+            } while (zugGueltig == false);
 
-        zugGueltig = false;
-        do {
-            std::cout << "Spieler 3 du bist am Zug, hier ist dein Blatt, welche Karte willst du spielen?" << std::endl;
+            std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " legt: " << gespielteKarte.farbe << " "
+                      << gespielteKarte.name << std::endl;
             std::cout << std::endl;
-            std::cout << "Hand von " << s3.name << ":" << std::endl;
-            std::cout << std::endl;
-            for (int i = 0; i < s3.hand.size(); i++) {
-                std::cout << "(" << i << ")" << s3.hand[i].farbe << " " << s3.hand[i].name << std::endl;
-            }
-            std::cout << std::endl;
-            std::cin >> wahl;
-            if (wahl >= 0 && wahl < s3.hand.size()) {
-                gespielteKarte = s3.hand[wahl];
-                if (darfKarteLegen(gespielteKarte, stich, s3.hand) == true) {
-                    zugGueltig = true;
-                } else if (stich[0].farbeID == 4) {
-                    std::cout << "Du musst Trumpf bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
-                } else {
-                    std::cout << "Du musst " << stich[0].farbe << " bedienen!" << std::endl;
-                    std::cout << std::endl;
-                    zugGueltig = false;
-                }
-            } else {
-                std::cout << "Falsche Eingabe, lege eine Karte, die existiert. (Die Zahl vor der Karte)" << std::endl;
-            };
-        } while (zugGueltig == false);
-        std::cout << "Spieler 3 legt die Karte \"" << gespielteKarte.farbe << " " << gespielteKarte.name << "\""
-                  << std::endl;
-        std::cout << std::endl;
-        stich.push_back(gespielteKarte);
-        s3.hand.erase(s3.hand.begin() + wahl);
-
-        // Auswertung
-
-        int gewinnerIndex = bestimmeStichGewinner(stich);
+            stich.push_back(gespielteKarte);
+            aktuellerSpieler->hand.erase(aktuellerSpieler->hand.begin() + wahl);
+        }
+        int stichGewinner = bestimmeStichGewinner(stich);
+        int gewinnerID = (vorhand + stichGewinner) % 3;
         std::vector<std::string> positionen = {"Vorhand", "Mittelhand", "Hinterhand"};
-        std::cout << "Der Stich geht an die " << positionen[gewinnerIndex] << "!" << std::endl;
+        std::cout << "Der Stich geht an die " << positionen[stichGewinner] << "!" << std::endl;
         std::cout << std::endl;
+        vorhand = gewinnerID;
     }
     std::cout << "Das Spiel ist vorbei! Tippe 'x' und Enter zum Beenden." << std::endl;
     std::cout << std::endl;
