@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <vector>
 
 // Der Aufbaue der Skat-Karten
 
@@ -23,20 +24,93 @@ class Karte {
         staerke = s;
         farbeID = id;
     }
-    std::string bekommtName() const {
+    std::string getName() const {
         return name;
     }
-    std::string bekommtFarbe() const {
+    std::string getFarbe() const {
         return farbe;
     }
-    int bekommtAugen() const {
+    int getAugen() const {
         return augen;
     }
-    int bekommtStarke() const {
+    int getStarke() const {
         return staerke;
     }
-    int bekommtFarbeID() const {
+    int getFarbeID() const {
         return farbeID;
+    }
+};
+
+class Spieler {
+   private:
+    std::string name;
+    std::vector<Karte> hand;
+    std::vector<Karte> gewonneneStiche;
+
+   public:
+    Spieler() {}
+
+    Spieler(std::string n) {
+        name = n;
+    };
+
+    std::string getName() const {
+        return name;
+    }
+
+    const std::vector<Karte>& showHand() const {
+        return hand;
+    }
+
+    int getHandGroesse() const {
+        return hand.size();
+    }
+
+    Karte getKarteAnPosition(int i) const {
+        if (i >= 0 && i < hand.size()) {
+            return [i];
+        }
+        return Karte();
+    }
+
+    Karte spieleKarte(int i) {
+        if (i >= 0 && i < hand.size()) {
+            Karte k = hand[i];
+            hand.erase(hand.begin() + i);
+            return k;
+        }
+        return Karte();
+    }
+
+    void nimmtStich(const std::vector<Karte>& stich) {
+        for (const auto& k : stich) {
+            gewonneneStiche.push_back(k);
+        }
+    }
+
+    void eraseKarte(int i) {
+        if (i >= 0 && i < hand.size()) {
+            hand.erase(hand.begin() + i);
+        }
+    }
+
+    void getStich(std::vector<Karte> stich) {
+        for (const auto& k : stich) {
+            gewonneneStiche.push_back(k);
+        }
+    }
+
+    const std::vector<Karte>& getGewonneneStiche() const {
+        return gewonneneStiche;
+    }
+
+    int berechnePunkte() const {
+        int summe = 0;
+        for (const auto& k : gewonneneStiche) {
+            summe += k.getAugen();
+        }
+
+        return summe;
     }
 };
 
@@ -95,60 +169,16 @@ void mischDeck(std::vector<Karte>& deck) {
     std::shuffle(deck.begin(), deck.end(), generator);
 }
 
-// Der Aufbau der Spieler
-
-class Spieler {
-   private:
-    std::string name;
-    std::vector<Karte> hand;
-    std::vector<Karte> gewonneneStiche;
-
-   public:
-    Spieler() {}
-
-    Spieler(std::string n) {
-        name = n;
-    };
-
-    std::string bekommtName() const {
-        return name;
-    }
-
-    const std::vector<Karte>& zeigeHand() const {
-        return hand;
-    }
-
-    void bekommtKarte(Karte k) {
-        hand.push_back(k);
-    }
-
-    void entferntKarte(int i) {
-        if (i >= 0 && i < hand.size()) {
-            hand.erase(hand.begin() + i);
-        }
-    }
-
-    void bekommtStich(std::vector<Karte> stich) {
-        for (const auto& k : stich) {
-            gewonneneStiche.push_back(k);
-        }
-    }
-
-    const std::vector<Karte>& getGewonneneStiche() const {
-        return gewonneneStiche;
-    }
-};
-
 // Man checkt, ob der Spieler, die Karte legen darf oder nicht
 
 bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> hand) {
     if (stich.size() == 0) {
         return true;
-    } else if (karte.bekommtFarbeID() == stich[0].bekommtFarbeID()) {
+    } else if (karte.getFarbeID() == stich[0].getFarbeID()) {
         return true;
     } else {
         for (int i = 0; i < hand.size(); i++) {
-            if (hand[i].bekommtFarbeID() == stich[0].bekommtFarbeID()) {
+            if (hand[i].getFarbeID() == stich[0].getFarbeID()) {
                 return false;
             }
         }
@@ -162,15 +192,15 @@ int bestimmeStichGewinner(std::vector<Karte> stich) {
     int gewinnerIndex = 0;
 
     for (int i = 1; i < 3; i++) {
-        if (stich[i].bekommtFarbeID() == 4) {
-            if (stich[gewinnerIndex].bekommtFarbeID() != 4) {
+        if (stich[i].getFarbeID() == 4) {
+            if (stich[gewinnerIndex].getFarbeID() != 4) {
                 gewinnerIndex = i;
-            } else if (stich[i].bekommtStarke() > stich[gewinnerIndex].bekommtStarke()) {
+            } else if (stich[i].getStarke() > stich[gewinnerIndex].getStarke()) {
                 gewinnerIndex = i;
             }
-        } else if (stich[i].bekommtFarbeID() == stich[0].bekommtFarbeID()) {
-            if (stich[gewinnerIndex].bekommtFarbeID() != 4) {
-                if (stich[i].bekommtStarke() > stich[gewinnerIndex].bekommtStarke()) {
+        } else if (stich[i].getFarbeID() == stich[0].getFarbeID()) {
+            if (stich[gewinnerIndex].getFarbeID() != 4) {
+                if (stich[i].getStarke() > stich[gewinnerIndex].getStarke()) {
                     gewinnerIndex = i;
                 }
             }
@@ -179,10 +209,10 @@ int bestimmeStichGewinner(std::vector<Karte> stich) {
     return gewinnerIndex;
 }
 
-int zaehltAugen(std::vector<Karte> stapel) {
+int berechneKartenStapelPunkte(const std::vector<Karte>& stapel) {
     int summe = 0;
-    for (int i = 0; i < stapel.size(); i++) {
-        summe += stapel[i].bekommtAugen();
+    for (const auto& k : stapel) {
+        summe += k.getAugen();
     }
     return summe;
 }
@@ -197,6 +227,7 @@ int main() {
                  "Farbe!\nGut Blatt :)"
               << std::endl;
     std::cout << std::endl;
+
     // Ersteinmal den Spieler nach seinem Namen Fragen
 
     std::cout << "Spieler 1, wie moechtest du heissen?" << std::endl;
@@ -223,28 +254,20 @@ int main() {
         mischDeck(deck);
         std::vector<Karte> skat;
 
-        Spieler s1;
-        s1.name = spieler1Name;
-        Spieler s2;
-        s2.name = spieler2Name;
-        Spieler s3;
-        s3.name = spieler3Name;
+        std::vector<Spieler> spielerListe;
+        spielerListe.push_back(Spieler(spieler1Name));
+        spielerListe.push_back(Spieler(spieler2Name));
+        spielerListe.push_back(Spieler(spieler3Name));
 
         for (int i = 0; i < 32; i++) {
-            if (i < 10) {
-                s1.hand.push_back(deck[i]);
-            } else if (i < 20) {
-                s2.hand.push_back(deck[i]);
-            } else if (i < 30) {
-                s3.hand.push_back(deck[i]);
+            if (i < 30) {
+                spielerListe[i / 10].bekommtKarte(deck[i]);
             } else {
                 skat.push_back(deck[i]);
             }
         }
-
         // Eine for-Schleife für das Spiel
 
-        std::vector<Spieler*> spielerListe = {&s1, &s2, &s3};
         int vorhand = startSpielerErsteRunde;
         std::vector<std::string> positionen = {"Vorhand", "Mittelhand", "Hinterhand"};
 
@@ -252,33 +275,34 @@ int main() {
             std::vector<Karte> stich;
             for (int i = 0; i < 3; i++) {
                 int aktuellerSpielerIndex = (vorhand + i) % 3;
-                Spieler* aktuellerSpieler = spielerListe[aktuellerSpielerIndex];
+                Spieler& aktuellerSpieler = spielerListe[aktuellerSpielerIndex];
                 Karte gespielteKarte;
                 bool zugGueltig = false;
                 int wahl;
                 do {
-                    std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " ist dran." << std::endl;
+                    std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " (" << aktuellerSpieler.getName()
+                              << ") ist dran." << std::endl;
                     std::cout << std::endl;
-                    std::cout << "Hand von " << aktuellerSpieler->name << ":" << std::endl;
+                    std::cout << "Hand von " << aktuellerSpieler.getName() << ":" << std::endl;
                     std::cout << std::endl;
-                    for (int k = 0; k < aktuellerSpieler->zeigeHand().size(); k++) {
-                        std::cout << "(" << k << ") " << aktuellerSpieler->hand[k].farbe << " "
-                                  << aktuellerSpieler->hand[k].name << std::endl;
+                    for (int k = 0; k < aktuellerSpieler.showHand().size(); k++) {
+                        std::cout << "(" << k << ") " << aktuellerSpieler.showHand()[k].getFarbe() << " "
+                                  << aktuellerSpieler.showHand()[k].getName() << std::endl;
                     }
                     std::cout << std::endl;
 
                     std::cin >> wahl;
 
-                    if (wahl >= 0 && wahl < aktuellerSpieler->hand.size()) {
-                        gespielteKarte = aktuellerSpieler->hand[wahl];
-                        if (darfKarteLegen(gespielteKarte, stich, aktuellerSpieler->hand) == true) {
+                    if (wahl >= 0 && wahl < aktuellerSpieler.hand.size()) {
+                        gespielteKarte = aktuellerSpieler.hand[wahl];
+                        if (darfKarteLegen(gespielteKarte, stich, aktuellerSpieler.hand) == true) {
                             zugGueltig = true;
-                        } else if (stich[0].bekommtFarbeID() == 4) {
+                        } else if (stich[0].getFarbeID() == 4) {
                             std::cout << "Du musst Trumpf bedienen!" << std::endl;
                             std::cout << std::endl;
                             zugGueltig = false;
                         } else {
-                            std::cout << "Du musst " << stich[0].bekommtFarbe() << " bedienen!" << std::endl;
+                            std::cout << "Du musst " << stich[0].getFarbe() << " bedienen!" << std::endl;
                             std::cout << std::endl;
                             zugGueltig = false;
                         }
@@ -290,26 +314,27 @@ int main() {
 
                 } while (zugGueltig == false);
 
-                std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " legt: " << gespielteKarte.bekommtFarbe()
-                          << " " << gespielteKarte.name << std::endl;
+                std::cout << "Spieler " << (aktuellerSpielerIndex + 1) << " legt: " << gespielteKarte.getFarbe() << " "
+                          << gespielteKarte.getName() << std::endl;
                 std::cout << std::endl;
                 stich.push_back(gespielteKarte);
-                aktuellerSpieler->hand.erase(aktuellerSpieler->hand.begin() + wahl);
+                aktuellerSpieler.hand.erase(aktuellerSpiele.hand.begin() + wahl);
             }
             int stichGewinner = bestimmeStichGewinner(stich);
             int gewinnerID = (vorhand + stichGewinner) % 3;
-            Spieler* gewinner = spielerListe[gewinnerID];
+            Spieler& gewinner = spielerListe[gewinnerID];
             for (int k = 0; k < stich.size(); k++) {
-                gewinner->gewonneneStiche.push_back(stich[k]);
+                gewinner.getGewonneneStiche().push_back(stich[k]);
             }
             std::cout << "-----Der Stich geht an die " << positionen[stichGewinner] << "!-----" << std::endl;
             std::cout << std::endl;
             vorhand = gewinnerID;
         }
-        int punkteS1 = zaehltAugen(s1.gewonneneStiche);
-        int punkteS2 = zaehltAugen(s2.gewonneneStiche);
-        int punkteS3 = zaehltAugen(s3.gewonneneStiche);
-        int skatPunkte = zaehltAugen(skat);
+
+        int punkteS1 = spielerListe[0].berechnePunkte();
+        int punkteS2 = spielerListe[1].berechnePunkte();
+        int punkteS3 = spielerListe[2].berechnePunkte();
+        int skatPunkte = berechneKartenStapelPunkte(skat);
 
         std::cout << "--- ENDERGEBNIS ---" << std::endl;
         std::cout << spieler1Name << " " << punkteS1 << " Augen" << std::endl;
@@ -318,36 +343,20 @@ int main() {
         std::cout << std::endl;
 
         for (int i = 0; i < skat.size(); i++) {
-            std::cout << "Im Skat lag: " << skat[i].bekommtFarbe() << " " << skat[i].name << std::endl;
+            std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName() << std::endl;
         }
         std::cout << std::endl;
         if (punkteS1 > punkteS2 && punkteS1 > punkteS3) {
-            int endPunkteS1;
-            endPunkteS1 = punkteS1 + skatPunkte;
-            std::cout << spieler1Name << " hat das Spiel verloren!" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Die Anzahl der Punkte im Skat (" << skatPunkte << ") werden zu dazugerechnet." << std::endl;
-            std::cout << std::endl;
-            std::cout << spieler1Name << " verliert das Spiel mit " << endPunkteS1 << " Augen!" << std::endl;
-            std::cout << std::endl;
+            std::cout << spieler1Name << " verliert mit " << (punkteS1 + skatPunkte) << " Augen, inklusive dem Skat!"
+                      << std::endl;
         } else if (punkteS2 > punkteS1 && punkteS2 > punkteS3) {
-            int endPunkteS2;
-            endPunkteS2 = punkteS2 + skatPunkte;
-            std::cout << spieler2Name << " hat das Spiel verloren!" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Die Anzahl der Punkte im Skat (" << skatPunkte << ") werden zu dazugerechnet." << std::endl;
-            std::cout << std::endl;
-            std::cout << spieler2Name << " verliert das Spiel mit " << endPunkteS2 << " Augen!" << std::endl;
-            std::cout << std::endl;
+            std::cout << spieler2Name << " verliert mit " << (punkteS2 + skatPunkte) << " Augen inklusive dem Skat!"
+                      << std::endl;
         } else if (punkteS3 > punkteS1 && punkteS3 > punkteS2) {
-            int endPunkteS3;
-            endPunkteS3 = punkteS3 + skatPunkte;
-            std::cout << spieler3Name << " hat das Spiel verloren!" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Die Anzahl der Punkte im Skat (" << skatPunkte << ") werden zu dazugerechnet." << std::endl;
-            std::cout << std::endl;
-            std::cout << spieler3Name << " verliert das Spiel mit " << endPunkteS3 << " Augen!" << std::endl;
-            std::cout << std::endl;
+            std::cout << spieler3Name << " verliert mit " << (punkteS3 + skatPunkte) << " Augen inklusive dem Skat!"
+                      << std::endl;
+        } else {
+            std::cout << "Unentschieden!" << std::endl;
         }
 
         startSpielerErsteRunde = (startSpielerErsteRunde + 1) % 3;
