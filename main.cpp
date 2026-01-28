@@ -10,10 +10,10 @@
 #include "Spieler.hpp"
 
 int main() {
-    std::cout << "Willkommen zum Skatspiel. Gespielt wird im Ramsch, das heißt: jeder gegen Jeden, Unter sind Trumpf "
+    std::cout << "Willkommen zum Skatspiel. Gespielt wird im Ramsch, das heisst: jeder gegen Jeden, Unter sind Trumpf "
                  "und der Spieler, mit den meisten Punkten verliert das Spiel."
               << std::endl;
-    std::cout << "Buben stechen in der Reihenfolge: Eichel > Rot > Gruen > Schellen." << std::endl;
+    std::cout << "Unter stechen in der Reihenfolge: Eichel > Rot > Gruen > Schellen." << std::endl;
     std::cout << "Gut Blatt!\n" << std::endl;
 
     // 1. Das Spiel-Objekt erstellen

@@ -33,6 +33,7 @@ class SkatSpiel {
     SkatSpiel();
     void spielerAnmelden();
     void starten();
+    std::string getSkat() const;
 };
 
 #endif

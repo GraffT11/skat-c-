@@ -47,11 +47,11 @@ int berechneAugen(std::string name) {
 
 int berechneStaerke(std::string name, std::string farbe) {
     if (name == "Unter") {
-        if (farbe == "Kreuz")
+        if (farbe == "Eichel")
             return 12;
-        else if (farbe == "Pik")
+        else if (farbe == "Rot")
             return 11;
-        else if (farbe == "Herz")
+        else if (farbe == "Gruen")
             return 10;
         else
             return 9;
@@ -68,7 +68,7 @@ int berechneStaerke(std::string name, std::string farbe) {
 
 std::vector<Karte> erstelleDeck() {
     std::vector<Karte> deck;
-    std::vector<std::string> farben = {"Kreuz", "Pik", "Herz", "Karo"};
+    std::vector<std::string> farben = {"Eichel", "Rot", "Gruen", "Schellen"};
     std::vector<std::string> namen = {"Sieben", "Acht", "Neun", "Ober", "Koenig", "Zehn", "Ass", "Unter"};
 
     for (int f = 0; f < 4; f++) {

@@ -7,7 +7,7 @@ SkatSpiel::SkatSpiel() : vorhand(0) {}
 void SkatSpiel::spielerAnmelden() {
     for (int i = 0; i < 3; i++) {
         std::string n;
-        std::cout << "Spieler " << (i + 1) << ", Name: ";
+        std::cout << "Spieler " << (i + 1) << ", wie willst du heissen? ";
         std::cin >> n;
         spielerListe.push_back(Spieler(n));
     }
@@ -60,6 +60,7 @@ void SkatSpiel::spieleStich(int stichNummer) {
         int wahl = fordereKartenWahl(s, stich);
 
         Karte k = s.spieleKarte(wahl);
+        std::cout << std::endl;
         std::cout << s.getName() << " legt: " << k.getFarbe() << " " << k.getName() << "\n\n";
         stich.push_back(k);
     }
@@ -71,9 +72,10 @@ void SkatSpiel::spieleStich(int stichNummer) {
     spielerListe[gewinnerAbs].nimmtStich(stich);
     vorhand = gewinnerAbs;  // Gewinner kommt raus
 
-    // Letzter Stich kriegt den Skat [cite: 752]
+    // Letzter Stich kriegt den Skat
     if (stichNummer == 9) {
-        std::cout << "Der Skat geht an " << spielerListe[gewinnerAbs].getName() << "!\n";
+        std::cout << std::endl;
+        std::cout << std::endl;
         spielerListe[gewinnerAbs].nimmtStich(skat);
     }
 }
@@ -81,7 +83,7 @@ void SkatSpiel::spieleStich(int stichNummer) {
 // --- Aufgeteilte Hilfsfunktionen (<20 Zeilen) ---
 
 void SkatSpiel::zeigeHand(const Spieler& s) const {
-    std::cout << s.getName() << " ist dran. \n Deine Hand:\n";
+    std::cout << s.getName() << " ist dran. \nDeine Hand:\n";
     std::cout << std::endl;
     const auto& hand = s.getHand();
     for (size_t k = 0; k < hand.size(); k++) {
@@ -114,6 +116,7 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
             } else {
                 if (stich[0].getFarbeID() == 4) {
                     std::cout << "Du musst Trumpf bedienen!";
+                    std::cout << std::endl;
                 } else {
                     std::cout << "Du musst " << stich[0].getFarbe() << " bedienen!\n\n";
                 }
@@ -158,6 +161,9 @@ int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
 }
 
 void SkatSpiel::werteSpielAus() {
+    for (int i = 0; i < skat.size(); i++) {
+        std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName();
+    }
     std::cout << "--- ENDERGEBNIS ---\n";
     int maxPunkte = -1;
     int verliererIndex = -1;
