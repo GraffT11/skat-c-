@@ -29,7 +29,7 @@ int Karte::getFarbeID() const {
 }
 
 int berechneFarbeID(std::string name, int farbeID) {
-    if (name == "Bube")
+    if (name == "Unter")
         return 4;
     else {
         return farbeID;
@@ -40,13 +40,13 @@ int berechneAugen(std::string name) {
     if (name == "Ass") return 11;
     if (name == "Zehn") return 10;
     if (name == "Koenig") return 4;
-    if (name == "Dame") return 3;
-    if (name == "Bube") return 2;
+    if (name == "Ober") return 3;
+    if (name == "Unter") return 2;
     return 0;
 }
 
 int berechneStaerke(std::string name, std::string farbe) {
-    if (name == "Bube") {
+    if (name == "Unter") {
         if (farbe == "Kreuz")
             return 12;
         else if (farbe == "Pik")
@@ -59,7 +59,7 @@ int berechneStaerke(std::string name, std::string farbe) {
     if (name == "Ass") return 7;
     if (name == "Zehn") return 6;
     if (name == "Koenig") return 5;
-    if (name == "Dame") return 4;
+    if (name == "Ober") return 4;
     if (name == "Neun") return 3;
     if (name == "Acht") return 2;
     if (name == "Sieben") return 1;
@@ -69,7 +69,7 @@ int berechneStaerke(std::string name, std::string farbe) {
 std::vector<Karte> erstelleDeck() {
     std::vector<Karte> deck;
     std::vector<std::string> farben = {"Kreuz", "Pik", "Herz", "Karo"};
-    std::vector<std::string> namen = {"Sieben", "Acht", "Neun", "Dame", "Koenig", "Zehn", "Ass", "Bube"};
+    std::vector<std::string> namen = {"Sieben", "Acht", "Neun", "Ober", "Koenig", "Zehn", "Ass", "Unter"};
 
     for (int f = 0; f < 4; f++) {
         for (int n = 0; n < 8; n++) {

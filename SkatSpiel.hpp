@@ -25,6 +25,8 @@ class SkatSpiel {
     bool darfKarteLegen(const Karte& karte, const std::vector<Karte>& stich, const std::vector<Karte>& hand);
 
     // Eingabe-Helfer (Löst auch dein Endlosschleifen-Problem!)
+    void zeigeHand(const Spieler& s) const;
+    int leseZahlEingabe();
     int fordereKartenWahl(Spieler& s, const std::vector<Karte>& aktuellerStich);
 
    public:

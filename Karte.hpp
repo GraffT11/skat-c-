@@ -42,6 +42,6 @@ std::vector<Karte> erstelleDeck();
 
 void mischDeck(std::vector<Karte>& deck);
 
-int berechneSkatPunkte(const std::vector<Karte>& stapel)
+int berechneSkatPunkte(const std::vector<Karte>& stapel);
 
 #endif
