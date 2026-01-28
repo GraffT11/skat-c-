@@ -8,73 +8,19 @@
 #include "Karte.hpp"
 #include "Spieler.hpp"
 
-// Man checkt, ob der Spieler, die Karte legen darf oder nicht
-
-void mischDeck(std::vector<Karte>& deck) {
-    std::random_device rd;
-    unsigned seed = rd();
-    std::default_random_engine generator(seed);
-    std::shuffle(deck.begin(), deck.end(), generator);
-}
-
-bool darfKarteLegen(Karte karte, std::vector<Karte> stich, std::vector<Karte> hand) {
-    if (stich.size() == 0) {
-        return true;
-    } else if (karte.getFarbeID() == stich[0].getFarbeID()) {
-        return true;
-    } else {
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand[i].getFarbeID() == stich[0].getFarbeID()) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-// Man checkt, wer den Stich am Ende gewinnt
-
-int bestimmeStichGewinner(std::vector<Karte> stich) {
-    int gewinnerIndex = 0;
-
-    for (int i = 1; i < 3; i++) {
-        if (stich[i].getFarbeID() == 4) {
-            if (stich[gewinnerIndex].getFarbeID() != 4) {
-                gewinnerIndex = i;
-            } else if (stich[i].getStaerke() > stich[gewinnerIndex].getStaerke()) {
-                gewinnerIndex = i;
-            }
-        } else if (stich[i].getFarbeID() == stich[0].getFarbeID()) {
-            if (stich[gewinnerIndex].getFarbeID() != 4) {
-                if (stich[i].getStaerke() > stich[gewinnerIndex].getStaerke()) {
-                    gewinnerIndex = i;
-                }
-            }
-        }
-    }
-    return gewinnerIndex;
-}
-
-int berechneKartenStapelPunkte(const std::vector<Karte>& stapel) {
-    int summe = 0;
-    for (const auto& k : stapel) {
-        summe += k.getAugen();
-    }
-    return summe;
-}
-
-// Das Spiel selber
+// Der Anfang des Spiels mit einer kleinen Einleitung
 
 int main() {
     std::cout << "Willkommen zum Skatspiel." << std::endl;
     std::cout << std::endl;
     std::cout << "Gespielt wird im Ramsch. Das heisst: der Spieler, mit den meisten "
                  "Punkten, verliert das Spiel.\nAchtung: Buben sind natuerlich immer Trumpf und nicht die angezeigt "
-                 "Farbe!\nGut Blatt :)"
+                 "Farbe!\n Auch wichtig: um eine Karte zu legen, muss man die Zahl vor der eigentliche Karte schreiben "
+                 "und keinerlei Buchstaben. \nGut Blatt :)"
               << std::endl;
     std::cout << std::endl;
 
-    // Ersteinmal den Spieler nach seinem Namen Fragen
+    // Die Spieler werden nach ihren Namen gefragt
 
     std::string namen[3];
     for (int i = 0; i < 3; i++) {
@@ -104,7 +50,6 @@ int main() {
                 skat.push_back(deck[i]);
             }
         }
-        // Eine for-Schleife für das Spiel
 
         int vorhand = startSpielerErsteRunde;
         std::vector<std::string> positionen = {"Vorhand", "Mittelhand", "Hinterhand"};
@@ -170,7 +115,7 @@ int main() {
         int punkteS1 = spielerListe[0].berechnePunkte();
         int punkteS2 = spielerListe[1].berechnePunkte();
         int punkteS3 = spielerListe[2].berechnePunkte();
-        int skatPunkte = berechneKartenStapelPunkte(skat);
+        int skatPunkte = berechneSkatPunkte(skat);
 
         std::cout << "--- ENDERGEBNIS ---" << std::endl;
         std::cout << spielerListe[0].getName() << " " << punkteS1 << " Augen" << std::endl;

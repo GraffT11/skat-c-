@@ -10,6 +10,7 @@
  * @class Spieler
  * @brief Verwaltet die Handkarten und die gewonnenen Stiche eines Spielers.
  */
+
 class Spieler {
    private:
     std::string name;

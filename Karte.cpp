@@ -81,3 +81,18 @@ std::vector<Karte> erstelleDeck() {
     }
     return deck;
 }
+
+void mischDeck(std::vector<Karte>& deck) {
+    std::random_device rd;
+    unsigned seed = rd();
+    std::default_random_engine generator(seed);
+    std::shuffle(deck.begin(), deck.end(), generator);
+}
+
+int berechneSkatPunkte(const std::vector<Karte>& stapel) {
+    int summe = 0;
+    for (const auto& k : stapel) {
+        summe += k.getAugen();
+    }
+    return summe;
+}
