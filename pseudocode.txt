@@ -1,4 +1,0 @@
-Noch zu fehlende Features:
-- Eingabe von Buchstaben nicht zum crash bringen lassen
-(- Skat am Anfang herumgeben lassen wie im echten Ramsch)
-(- Falls geschoben wird Punkte verdoppeln)

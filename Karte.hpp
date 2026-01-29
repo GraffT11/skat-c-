@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+// Das Grundgerüst der Klasse Karte
+
 class Karte {
    private:
     std::string name;

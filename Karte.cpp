@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-// Konstruktor: Nimmt Werte und packt sie in die Variablen (mit :)
+// Der Konstruktor Karte, er definiert welche Eigenschaften die Karte hat und gibt die nötigen Werte bei Bedarf aus
 Karte::Karte() {}
 Karte::Karte(std::string n, std::string f, int a, int s, int fID)
     : name(n), farbe(f), augen(a), staerke(s), farbeID(fID) {}
@@ -28,6 +28,8 @@ int Karte::getFarbeID() const {
     return farbeID;
 }
 
+// Definiert, dass "Unter" ne eigene FarbeID haben, damit sie als Trumpf gekennzeichnet sind
+
 int berechneFarbeID(std::string name, int farbeID) {
     if (name == "Unter")
         return 4;
@@ -35,6 +37,8 @@ int berechneFarbeID(std::string name, int farbeID) {
         return farbeID;
     }
 }
+
+// Definiert, welche Karte wie viele Punkte am Ende bringt
 
 int berechneAugen(std::string name) {
     if (name == "Ass") return 11;
@@ -44,6 +48,8 @@ int berechneAugen(std::string name) {
     if (name == "Unter") return 2;
     return 0;
 }
+
+// Definiert, den Rang der Karten und gleichzeitig, dass die einzelnen Unter unterschiedliche Stärken haben
 
 int berechneStaerke(std::string name, std::string farbe) {
     if (name == "Unter") {
@@ -66,6 +72,8 @@ int berechneStaerke(std::string name, std::string farbe) {
     return 0;
 }
 
+// Die Funktion baut das finale Deck mit den nötigen Eigenschaften
+
 std::vector<Karte> erstelleDeck() {
     std::vector<Karte> deck;
     std::vector<std::string> farben = {"Eichel", "Rot", "Gruen", "Schellen"};
@@ -82,12 +90,16 @@ std::vector<Karte> erstelleDeck() {
     return deck;
 }
 
+// Die Funktion nimmt einen zufälligen Wert von dem Gerät des Benutzers und mischt mit diesem das Deck
+
 void mischDeck(std::vector<Karte>& deck) {
     std::random_device rd;
     unsigned seed = rd();
     std::default_random_engine generator(seed);
     std::shuffle(deck.begin(), deck.end(), generator);
 }
+
+// Die Funktion berechnet wie viele Punkte im Skat liegen
 
 int berechneSkatPunkte(const std::vector<Karte>& stapel) {
     int summe = 0;
