@@ -9,6 +9,14 @@
 #include "SkatSpiel.hpp"
 #include "Spieler.hpp"
 
+/**
+ * @brief Hauptprogramm für das Skatspiel.
+ *
+ * Initialisiert das Spielobjekt, führt die Anmeldung durch und startet die Spielschleife.
+ * Gibt Informationen zu den Spielregeln auf der Konsole aus.
+ *
+ * @returns 0 bei erfolgreicher Ausführung.
+ */
 int main() {
     std::cout << "Willkommen zum Skatspiel. Gespielt wird im Ramsch, das heisst: jeder gegen Jeden, Unter sind Trumpf "
                  "und der Spieler, mit den meisten Punkten verliert das Spiel."

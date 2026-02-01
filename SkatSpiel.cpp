@@ -21,7 +21,6 @@ void SkatSpiel::erstelleUndMischeDeck() {
 
 void SkatSpiel::verteileKarten() {
     skat.clear();
-    // Neue Handkarten fuer alle (Logik vereinfacht fuer Ramsch)
     for (int i = 0; i < 32; i++) {
         if (i < 30)
             spielerListe[i / 10].bekommtKarte(deck[i]);
@@ -70,17 +69,14 @@ void SkatSpiel::spieleStich(int stichNummer) {
 
     std::cout << "--- der Stich geht an " << spielerListe[gewinnerAbs].getName() << " ---\n\n";
     spielerListe[gewinnerAbs].nimmtStich(stich);
-    vorhand = gewinnerAbs;  // Gewinner kommt raus
+    vorhand = gewinnerAbs;
 
-    // Letzter Stich kriegt den Skat
     if (stichNummer == 9) {
         std::cout << std::endl;
         std::cout << std::endl;
         spielerListe[gewinnerAbs].nimmtStich(skat);
     }
 }
-
-// --- Aufgeteilte Hilfsfunktionen (<20 Zeilen) ---
 
 void SkatSpiel::zeigeHand(const Spieler& s) const {
     std::cout << s.getName() << " ist dran. \nDeine Hand:\n";
@@ -115,8 +111,7 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
                 valid = true;
             } else {
                 if (stich[0].getFarbeID() == 4) {
-                    std::cout << "Du musst Trumpf bedienen!";
-                    std::cout << std::endl;
+                    std::cout << "Du musst Trumpf bedienen!\n";
                 } else {
                     std::cout << "Du musst " << stich[0].getFarbe() << " bedienen!\n\n";
                 }
@@ -128,13 +123,10 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
     return wahl;
 }
 
-// --- Regellogik ---
-
 bool SkatSpiel::darfKarteLegen(const Karte& k, const std::vector<Karte>& stich, const std::vector<Karte>& hand) {
     if (stich.empty()) return true;
     if (k.getFarbeID() == stich[0].getFarbeID()) return true;
 
-    // Pruefen ob Farbe vorhanden
     for (const auto& hk : hand) {
         if (hk.getFarbeID() == stich[0].getFarbeID()) return false;
     }
@@ -144,14 +136,11 @@ bool SkatSpiel::darfKarteLegen(const Karte& k, const std::vector<Karte>& stich, 
 int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
     int gewinner = 0;
     for (int i = 1; i < 3; i++) {
-        // Trumpf (ID 4 = Unter) sticht Nicht-Trumpf
         if (stich[i].getFarbeID() == 4) {
             if (stich[gewinner].getFarbeID() != 4 || stich[i].getStaerke() > stich[gewinner].getStaerke()) {
                 gewinner = i;
             }
-        }
-        // Farbe bedient und hoeher
-        else if (stich[i].getFarbeID() == stich[0].getFarbeID()) {
+        } else if (stich[i].getFarbeID() == stich[0].getFarbeID()) {
             if (stich[gewinner].getFarbeID() != 4 && stich[i].getStaerke() > stich[gewinner].getStaerke()) {
                 gewinner = i;
             }
@@ -162,9 +151,9 @@ int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
 
 void SkatSpiel::werteSpielAus() {
     for (int i = 0; i < skat.size(); i++) {
-        std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName();
+        std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName() << " ";
     }
-    std::cout << "--- ENDERGEBNIS ---\n";
+    std::cout << "\n--- ENDERGEBNIS ---\n";
     int maxPunkte = -1;
     int verliererIndex = -1;
 
@@ -172,7 +161,6 @@ void SkatSpiel::werteSpielAus() {
         int p = spielerListe[i].berechnePunkte();
         std::cout << spielerListe[i].getName() << ": " << p << " Augen\n";
 
-        // Simpler Vergleich fuer Ramsch-Verlierer
         if (p > maxPunkte) {
             maxPunkte = p;
             verliererIndex = i;

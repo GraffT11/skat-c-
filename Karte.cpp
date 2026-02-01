@@ -7,10 +7,13 @@
 #include <string>
 #include <vector>
 
-// Der Konstruktor Karte, er definiert welche Eigenschaften die Karte hat und gibt die nötigen Werte bei Bedarf aus
+// Implementierung der Konstruktoren
+
 Karte::Karte() {}
 Karte::Karte(std::string n, std::string f, int a, int s, int fID)
     : name(n), farbe(f), augen(a), staerke(s), farbeID(fID) {}
+
+// Implementierung der Getter
 
 std::string Karte::getName() const {
     return name;
@@ -28,7 +31,16 @@ int Karte::getFarbeID() const {
     return farbeID;
 }
 
-// Definiert, dass "Unter" ne eigene FarbeID haben, damit sie als Trumpf gekennzeichnet sind
+/**
+ * @brief Ermittelt die Farb-ID unter Berücksichtigung der Trumpf-Regel.
+ *
+ * Weist den "Unter"-Karten eine spezielle ID zu (4), damit diese logisch
+ * als Trumpf behandelt werden können und nicht ihrer aufgedruckten Farbe folgen.
+ *
+ * @param name Name der Karte.
+ * @param farbeID Die ursprüngliche ID der Farbe (0-3).
+ * @returns 4 wenn die Karte ein Unter ist, sonst die ursprüngliche farbeID.
+ */
 
 int berechneFarbeID(std::string name, int farbeID) {
     if (name == "Unter")
@@ -38,7 +50,15 @@ int berechneFarbeID(std::string name, int farbeID) {
     }
 }
 
-// Definiert, welche Karte wie viele Punkte am Ende bringt
+/**
+ * @brief Bestimmt den Augenwert einer Karte.
+ *
+ * Ordnet jedem Kartennamen die entsprechenden Punkte im Skat zu
+ * (z.B. Ass=11, Zehn=10, König=4, etc.).
+ *
+ * @param name Name der Karte.
+ * @returns Die Punktzahl der Karte oder 0 bei unbekannten Namen/Nieten.
+ */
 
 int berechneAugen(std::string name) {
     if (name == "Ass") return 11;
@@ -49,7 +69,16 @@ int berechneAugen(std::string name) {
     return 0;
 }
 
-// Definiert, den Rang der Karten und gleichzeitig, dass die einzelnen Unter unterschiedliche Stärken haben
+/**
+ * @brief Berechnet die Spielstärke einer Karte für den Stichvergleich.
+ *
+ * Definiert die Hierarchie der Karten. Besondere Behandlung für "Unter",
+ * deren Stärke von der Farbe abhängt (Eichel > Rot > Grün > Schellen).
+ *
+ * @param name Name der Karte.
+ * @param farbe Farbe der Karte (relevant für Unter).
+ * @returns Ein Integer-Wert, der die Stärke repräsentiert (höher ist stärker).
+ */
 
 int berechneStaerke(std::string name, std::string farbe) {
     if (name == "Unter") {
@@ -81,6 +110,7 @@ std::vector<Karte> erstelleDeck() {
 
     for (int f = 0; f < 4; f++) {
         for (int n = 0; n < 8; n++) {
+            // Hilfsfunktionen aufrufen um Eigenschaften zu bestimmen
             int a = berechneAugen(namen[n]);
             int s = berechneStaerke(namen[n], farben[f]);
             int fID = berechneFarbeID(namen[n], f);
@@ -90,16 +120,12 @@ std::vector<Karte> erstelleDeck() {
     return deck;
 }
 
-// Die Funktion nimmt einen zufälligen Wert von dem Gerät des Benutzers und mischt mit diesem das Deck
-
 void mischDeck(std::vector<Karte>& deck) {
     std::random_device rd;
     unsigned seed = rd();
     std::default_random_engine generator(seed);
     std::shuffle(deck.begin(), deck.end(), generator);
 }
-
-// Die Funktion berechnet wie viele Punkte im Skat liegen
 
 int berechneSkatPunkte(const std::vector<Karte>& stapel) {
     int summe = 0;
