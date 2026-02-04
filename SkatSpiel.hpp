@@ -8,10 +8,11 @@
 #include "Spieler.hpp"
 
 /**
- * @brief Hauptklasse für die Steuerung des Skatspiels (Ramsch-Modus).
+ * @brief Hauptklasse für die Steuerung des Skatspiels im Ramsch.
  *
  * Verwaltet den Spielablauf, die Spieler, das Deck und die Regelprüfung.
  */
+
 class SkatSpiel {
    private:
     std::vector<Spieler> spielerListe;
@@ -19,13 +20,14 @@ class SkatSpiel {
     std::vector<Karte> deck;
     int vorhand;  // Index des Spielers, der rauskommt
 
-    // --- Private Hilfsmethoden (Interne Logik) ---
+    // Hilfsmethoden für die interne Logik
 
     /**
      * @brief Erstellt ein neues Deck und mischt es.
      *
      * Nutzt die globalen Funktionen aus Karte.hpp.
      */
+
     void erstelleUndMischeDeck();
 
     /**
@@ -33,6 +35,7 @@ class SkatSpiel {
      *
      * Jeder Spieler erhält 10 Karten, 2 gehen in den Skat.
      */
+
     void verteileKarten();
 
     /**
@@ -40,6 +43,7 @@ class SkatSpiel {
      *
      * Ruft 10-mal spieleStich auf.
      */
+
     void spieleRunde();
 
     /**
@@ -50,25 +54,28 @@ class SkatSpiel {
      *
      * @param stichNummer Die Nummer des aktuellen Stichs (0-9). Wichtig für die Skat-Vergabe am Ende.
      */
+
     void spieleStich(int stichNummer);
 
     /**
      * @brief Wertet das Spiel am Ende aus.
      *
-     * Berechnet die Punkte aller Spieler, zeigt den Skat an und ermittelt den Verlierer (Ramsch).
+     * Berechnet die Punkte aller Spieler, zeigt den Skat an und ermittelt den Gewinner.
      */
+
     void werteSpielAus();
 
-    // --- Hilfsfunktionen für Regeln ---
+    // Hilfsfunktionen für die Spielregeln
 
     /**
      * @brief Ermittelt den Gewinner eines Stichs.
      *
-     * Prüft Bedienpflicht, Trumpf (Unter) und Kartenstärke.
+     * Prüft Bedienpflicht, Trumpf und Kartenstärke.
      *
      * @param stich Vektor der 3 gespielten Karten.
      * @returns Der Index (0-2) des Gewinners relativ zum Spieler, der rausgekommen ist.
      */
+
     int bestimmeStichGewinner(const std::vector<Karte>& stich);
 
     /**
@@ -81,36 +88,38 @@ class SkatSpiel {
      * @param hand Die gesamte Hand des Spielers (um zu prüfen, ob er bedienen könnte).
      * @returns true, wenn der Zug gültig ist, sonst false.
      */
+
     bool darfKarteLegen(const Karte& karte, const std::vector<Karte>& stich, const std::vector<Karte>& hand);
 
-    // --- Eingabe-Helfer ---
-
     /**
-     * @brief Gibt die Karten eines Spielers auf der Konsole aus.
+     * @brief Gibt die Karten eines Spielers aus.
      *
      * @param s Der Spieler, dessen Hand angezeigt werden soll.
      */
+
     void zeigeHand(const Spieler& s) const;
 
     /**
      * @brief Liest eine Ganzzahl von der Konsole ein.
      *
-     * Behandelt Eingabefehler (z.B. Buchstaben statt Zahlen) robust.
+     * Behandelt Eingabefehler (z.B. Buchstaben statt Zahlen).
      *
      * @returns Die eingelesene Zahl oder -1 bei Fehler.
      */
+
     int leseZahlEingabe();
 
     /**
      * @brief Führt den Dialog zur Kartenwahl mit einem Spieler.
      *
      * Zeigt die Hand, fordert zur Eingabe auf und wiederholt dies so lange,
-     * bis eine gültige (regelkonforme) Karte gewählt wurde.
+     * bis eine regelkonforme Karte gewählt wurde.
      *
      * @param s Referenz auf den Spieler, der dran ist.
      * @param aktuellerStich Vektor der bereits liegenden Karten (für Regelprüfung).
      * @returns Der Index der gewählten Karte in der Hand.
      */
+
     int fordereKartenWahl(Spieler& s, const std::vector<Karte>& aktuellerStich);
 
    public:
@@ -119,11 +128,13 @@ class SkatSpiel {
      *
      * Initialisiert das Spiel, setzt 'vorhand' auf 0.
      */
+
     SkatSpiel();
 
     /**
      * @brief Fragt die Namen der drei Spieler ab und erstellt die Spieler-Objekte.
      */
+
     void spielerAnmelden();
 
     /**
@@ -131,13 +142,8 @@ class SkatSpiel {
      *
      * Steuert den Ablauf: Mischen -> Verteilen -> Spielen -> Auswerten -> Wiederholen.
      */
-    void starten();
 
-    /**
-     * @brief Gibt den Inhalt des Skats als String zurück (Debug/Info).
-     * @returns String-Repräsentation des Skats.
-     */
-    std::string getSkat() const;
+    void starten();
 };
 
 #endif

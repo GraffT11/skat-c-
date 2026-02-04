@@ -9,7 +9,6 @@ void Spieler::bekommtKarte(const Karte& k) {
 }
 
 Karte Spieler::spieleKarte(int index) {
-    // Fehlerbehandlung: Prüfen ob der Index gültig ist
     if (index < 0 || index >= hand.size()) {
         return hand[0];
     }

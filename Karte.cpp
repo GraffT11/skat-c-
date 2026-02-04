@@ -1,7 +1,7 @@
 #include "Karte.hpp"
 
 #include <algorithm>
-#include <array>
+#include <chrono>
 #include <iostream>
 #include <random>
 #include <string>
@@ -77,7 +77,7 @@ int berechneAugen(std::string name) {
  *
  * @param name Name der Karte.
  * @param farbe Farbe der Karte (relevant für Unter).
- * @returns Ein Integer-Wert, der die Stärke repräsentiert (höher ist stärker).
+ * @returns Ein Wert, der die Stärke repräsentiert (höher ist stärker).
  */
 
 int berechneStaerke(std::string name, std::string farbe) {
@@ -121,16 +121,8 @@ std::vector<Karte> erstelleDeck() {
 }
 
 void mischDeck(std::vector<Karte>& deck) {
-    std::random_device rd;
-    unsigned seed = rd();
+    // Verwendung der Systemzeit als Seed
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine generator(seed);
     std::shuffle(deck.begin(), deck.end(), generator);
-}
-
-int berechneSkatPunkte(const std::vector<Karte>& stapel) {
-    int summe = 0;
-    for (const auto& k : stapel) {
-        summe += k.getAugen();
-    }
-    return summe;
 }

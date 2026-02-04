@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <array>
 #include <iostream>
-#include <random>
 #include <string>
 #include <vector>
 
@@ -12,8 +9,8 @@
 /**
  * @brief Hauptprogramm für das Skatspiel.
  *
- * Initialisiert das Spielobjekt, führt die Anmeldung durch und startet die Spielschleife.
- * Gibt Informationen zu den Spielregeln auf der Konsole aus.
+ * Initialisiert das Spielobjekt, führt die Abfragen der Spielernamen durch und
+ * startet die Spielschleife. Gibt eine kurze Begrüßung aus.
  *
  * @returns 0 bei erfolgreicher Ausführung.
  */

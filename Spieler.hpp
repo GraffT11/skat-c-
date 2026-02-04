@@ -10,8 +10,9 @@
  * @brief Repräsentiert einen Spieler im Skatspiel.
  *
  * Diese Klasse speichert den Namen des Spielers, verwaltet die Karten auf der Hand
- * und speichert die gewonnenen Stiche (Punktekonto).
+ * und speichert die gewonnenen Stiche.
  */
+
 class Spieler {
    private:
     std::string name;
@@ -22,8 +23,9 @@ class Spieler {
     /**
      * @brief Standardkonstruktor.
      *
-     * Erstellt einen Spieler mit dem Namen "Unbekannt" und leeren Kartenvektoren.
+     * Erstellt einen Spieler mit dem Namen "Spieler" und mit leeren Kartenvektoren.
      */
+
     Spieler();
 
     /**
@@ -33,6 +35,7 @@ class Spieler {
      *
      * @param n Der gewünschte Name des Spielers.
      */
+
     Spieler(std::string n);
 
     /**
@@ -42,18 +45,19 @@ class Spieler {
      *
      * @param k Die Karte, die aufgenommen werden soll.
      */
+
     void bekommtKarte(const Karte& k);
 
     /**
      * @brief Spielt eine Karte aus der Hand.
      *
      * Entfernt die Karte am angegebenen Index aus der Hand und gibt sie zurück.
-     * Enthält eine Sicherheitsprüfung für ungültige Indizes (gibt dann die erste Karte zurück).
      *
      * @param index Der Index der zu spielenden Karte in der Hand.
      * @returns Die Karte, die ausgespielt wurde.
      * @pre Der Index sollte innerhalb der Grenzen des Hand-Vektors liegen.
      */
+
     Karte spieleKarte(int index);
 
     /**
@@ -63,6 +67,7 @@ class Spieler {
      *
      * @param stich Vektor mit den drei Karten des Stichs.
      */
+
     void nimmtStich(const std::vector<Karte>& stich);
 
     /**
@@ -72,12 +77,14 @@ class Spieler {
      *
      * @returns Die Summe der Augen (0 bis 120).
      */
+
     int berechnePunkte() const;
 
     /**
      * @brief Gibt den Namen des Spielers zurück.
      * @returns Der Name als String.
      */
+
     std::string getName() const;
 
     /**
@@ -87,6 +94,7 @@ class Spieler {
      *
      * @returns Konstante Referenz auf den Vektor der Handkarten.
      */
+
     const std::vector<Karte>& getHand() const;
 
     /**
