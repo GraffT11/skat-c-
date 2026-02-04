@@ -89,6 +89,13 @@ class Spieler {
      */
     const std::vector<Karte>& getHand() const;
 
+    /**
+     * @brief Setzt die Punkte zurück für die nächste Runde.
+     *
+     * Damit die Punkte aller Runden nicht insgesamt zusammengerechnet werden,
+     * ist es nötig sie vor jeder neuen Runde zurückzusetzen.
+     */
+
     void reset();
 };
 
