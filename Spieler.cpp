@@ -9,10 +9,10 @@ void Spieler::bekommtKarte(const Karte& k) {
 }
 
 Karte Spieler::spieleKarte(int index) {
-    if (index < 0 || index >= hand.size()) {
+    if (index < 0 || static_cast<size_t>(index) >= hand.size()) {
         return hand[0];
     }
-    Karte k = hand[index];
+    Karte k = hand[static_cast<size_t>(index)];
     hand.erase(hand.begin() + index);
     return k;
 }

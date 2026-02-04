@@ -31,18 +31,7 @@ int Karte::getFarbeID() const {
     return farbeID;
 }
 
-/**
- * @brief Ermittelt die Farb-ID unter Berücksichtigung der Trumpf-Regel.
- *
- * Weist den "Unter"-Karten eine spezielle ID zu (4), damit diese logisch
- * als Trumpf behandelt werden können und nicht ihrer aufgedruckten Farbe folgen.
- *
- * @param name Name der Karte.
- * @param farbeID Die ursprüngliche ID der Farbe (0-3).
- * @returns 4 wenn die Karte ein Unter ist, sonst die ursprüngliche farbeID.
- */
-
-int berechneFarbeID(std::string name, int farbeID) {
+static int berechneFarbeID(std::string name, int farbeID) {
     if (name == "Unter")
         return 4;
     else {
@@ -50,17 +39,7 @@ int berechneFarbeID(std::string name, int farbeID) {
     }
 }
 
-/**
- * @brief Bestimmt den Augenwert einer Karte.
- *
- * Ordnet jedem Kartennamen die entsprechenden Punkte im Skat zu
- * (z.B. Ass=11, Zehn=10, König=4, etc.).
- *
- * @param name Name der Karte.
- * @returns Die Punktzahl der Karte oder 0 bei unbekannten Namen/Nieten.
- */
-
-int berechneAugen(std::string name) {
+static int berechneAugen(std::string name) {
     if (name == "Ass") return 11;
     if (name == "Zehn") return 10;
     if (name == "Koenig") return 4;
@@ -69,18 +48,7 @@ int berechneAugen(std::string name) {
     return 0;
 }
 
-/**
- * @brief Berechnet die Spielstärke einer Karte für den Stichvergleich.
- *
- * Definiert die Hierarchie der Karten. Besondere Behandlung für "Unter",
- * deren Stärke von der Farbe abhängt (Eichel > Rot > Grün > Schellen).
- *
- * @param name Name der Karte.
- * @param farbe Farbe der Karte (relevant für Unter).
- * @returns Ein Wert, der die Stärke repräsentiert (höher ist stärker).
- */
-
-int berechneStaerke(std::string name, std::string farbe) {
+static int berechneStaerke(std::string name, std::string farbe) {
     if (name == "Unter") {
         if (farbe == "Eichel")
             return 12;
@@ -108,12 +76,11 @@ std::vector<Karte> erstelleDeck() {
     std::vector<std::string> farben = {"Eichel", "Rot", "Gruen", "Schellen"};
     std::vector<std::string> namen = {"Sieben", "Acht", "Neun", "Ober", "Koenig", "Zehn", "Ass", "Unter"};
 
-    for (int f = 0; f < 4; f++) {
-        for (int n = 0; n < 8; n++) {
-            // Hilfsfunktionen aufrufen um Eigenschaften zu bestimmen
+    for (size_t f = 0; f < 4; f++) {
+        for (size_t n = 0; n < 8; n++) {
             int a = berechneAugen(namen[n]);
             int s = berechneStaerke(namen[n], farben[f]);
-            int fID = berechneFarbeID(namen[n], f);
+            int fID = berechneFarbeID(namen[n], static_cast<int>(f));
             deck.push_back(Karte(namen[n], farben[f], a, s, fID));
         }
     }
@@ -121,8 +88,8 @@ std::vector<Karte> erstelleDeck() {
 }
 
 void mischDeck(std::vector<Karte>& deck) {
-    // Verwendung der Systemzeit als Seed
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    unsigned seed = static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count());
+
     std::default_random_engine generator(seed);
     std::shuffle(deck.begin(), deck.end(), generator);
 }

@@ -21,7 +21,8 @@ void SkatSpiel::erstelleUndMischeDeck() {
 
 void SkatSpiel::verteileKarten() {
     skat.clear();
-    for (int i = 0; i < 32; i++) {
+    // Schleife auf size_t umgestellt
+    for (size_t i = 0; i < 32; i++) {
         if (i < 30)
             spielerListe[i / 10].bekommtKarte(deck[i]);
         else
@@ -58,7 +59,7 @@ void SkatSpiel::spieleStich(int stichNummer) {
 
     for (int i = 0; i < 3; i++) {
         int index = (aktuellerSpielerIdx + i) % 3;
-        Spieler& s = spielerListe[index];
+        Spieler& s = spielerListe[static_cast<size_t>(index)];
         int wahl = fordereKartenWahl(s, stich);
 
         Karte k = s.spieleKarte(wahl);
@@ -70,14 +71,14 @@ void SkatSpiel::spieleStich(int stichNummer) {
     int gewinnerRel = bestimmeStichGewinner(stich);
     int gewinnerAbs = (aktuellerSpielerIdx + gewinnerRel) % 3;
 
-    std::cout << "--- der Stich geht an " << spielerListe[gewinnerAbs].getName() << " ---\n\n";
-    spielerListe[gewinnerAbs].nimmtStich(stich);
+    std::cout << "--- der Stich geht an " << spielerListe[static_cast<size_t>(gewinnerAbs)].getName() << " ---\n\n";
+    spielerListe[static_cast<size_t>(gewinnerAbs)].nimmtStich(stich);
     vorhand = gewinnerAbs;
 
     if (stichNummer == 9) {
         std::cout << std::endl;
         std::cout << std::endl;
-        spielerListe[gewinnerAbs].nimmtStich(skat);
+        spielerListe[static_cast<size_t>(gewinnerAbs)].nimmtStich(skat);
     }
 }
 
@@ -109,8 +110,8 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
     do {
         zeigeHand(s);
         wahl = leseZahlEingabe();
-        if (wahl >= 0 && wahl < s.getHand().size()) {
-            if (darfKarteLegen(s.getHand()[wahl], stich, s.getHand())) {
+        if (wahl >= 0 && static_cast<size_t>(wahl) < s.getHand().size()) {
+            if (darfKarteLegen(s.getHand()[static_cast<size_t>(wahl)], stich, s.getHand())) {
                 valid = true;
             } else {
                 if (stich[0].getFarbeID() == 4) {
@@ -139,12 +140,15 @@ bool SkatSpiel::darfKarteLegen(const Karte& k, const std::vector<Karte>& stich, 
 int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
     int gewinner = 0;
     for (int i = 1; i < 3; i++) {
-        if (stich[i].getFarbeID() == 4) {
-            if (stich[gewinner].getFarbeID() != 4 || stich[i].getStaerke() > stich[gewinner].getStaerke()) {
+        size_t idx = static_cast<size_t>(i);
+        size_t gewinnerIdx = static_cast<size_t>(gewinner);
+
+        if (stich[idx].getFarbeID() == 4) {
+            if (stich[gewinnerIdx].getFarbeID() != 4 || stich[idx].getStaerke() > stich[gewinnerIdx].getStaerke()) {
                 gewinner = i;
             }
-        } else if (stich[i].getFarbeID() == stich[0].getFarbeID()) {
-            if (stich[gewinner].getFarbeID() != 4 && stich[i].getStaerke() > stich[gewinner].getStaerke()) {
+        } else if (stich[idx].getFarbeID() == stich[0].getFarbeID()) {
+            if (stich[gewinnerIdx].getFarbeID() != 4 && stich[idx].getStaerke() > stich[gewinnerIdx].getStaerke()) {
                 gewinner = i;
             }
         }
@@ -153,21 +157,21 @@ int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
 }
 
 void SkatSpiel::werteSpielAus() {
-    for (int i = 0; i < skat.size(); i++) {
+    for (size_t i = 0; i < skat.size(); i++) {
         std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName() << " \n";
     }
     std::cout << "\n--- ENDERGEBNIS ---\n";
     int maxPunkte = 1000;
     int gewinnerIndex = -1;
 
-    for (int i = 0; i < 3; ++i) {
+    for (size_t i = 0; i < 3; ++i) {
         int p = spielerListe[i].berechnePunkte();
         std::cout << spielerListe[i].getName() << ": " << p << " Augen\n";
 
         if (p < maxPunkte) {
             maxPunkte = p;
-            gewinnerIndex = i;
+            gewinnerIndex = static_cast<int>(i);
         }
     }
-    std::cout << "\nGewonnen hat: " << spielerListe[gewinnerIndex].getName() << "\n\n";
+    std::cout << "\nGewonnen hat: " << spielerListe[static_cast<size_t>(gewinnerIndex)].getName() << "\n\n";
 }
