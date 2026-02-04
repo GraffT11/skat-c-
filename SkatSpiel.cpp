@@ -32,6 +32,9 @@ void SkatSpiel::verteileKarten() {
 void SkatSpiel::starten() {
     char weiterspielen;
     do {
+        for (auto& s : spielerListe) {
+            s.reset();
+        }
         erstelleUndMischeDeck();
         verteileKarten();
         spieleRunde();
@@ -111,7 +114,7 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
                 valid = true;
             } else {
                 if (stich[0].getFarbeID() == 4) {
-                    std::cout << "Du musst Trumpf bedienen!\n";
+                    std::cout << "Du musst Trumpf bedienen!\n\n";
                 } else {
                     std::cout << "Du musst " << stich[0].getFarbe() << " bedienen!\n\n";
                 }
@@ -151,20 +154,20 @@ int SkatSpiel::bestimmeStichGewinner(const std::vector<Karte>& stich) {
 
 void SkatSpiel::werteSpielAus() {
     for (int i = 0; i < skat.size(); i++) {
-        std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName() << " ";
+        std::cout << "Im Skat lag: " << skat[i].getFarbe() << " " << skat[i].getName() << " \n";
     }
     std::cout << "\n--- ENDERGEBNIS ---\n";
-    int maxPunkte = -1;
-    int verliererIndex = -1;
+    int maxPunkte = 1000;
+    int gewinnerIndex = -1;
 
     for (int i = 0; i < 3; ++i) {
         int p = spielerListe[i].berechnePunkte();
         std::cout << spielerListe[i].getName() << ": " << p << " Augen\n";
 
-        if (p > maxPunkte) {
+        if (p < maxPunkte) {
             maxPunkte = p;
-            verliererIndex = i;
+            gewinnerIndex = i;
         }
     }
-    std::cout << "\nVerloren hat: " << spielerListe[verliererIndex].getName() << "\n\n";
+    std::cout << "\nGewonnen hat: " << spielerListe[gewinnerIndex].getName() << "\n\n";
 }

@@ -39,3 +39,8 @@ std::string Spieler::getName() const {
 const std::vector<Karte>& Spieler::getHand() const {
     return hand;
 }
+
+void Spieler::reset() {
+    gewonneneStiche.clear();
+    hand.clear();
+}

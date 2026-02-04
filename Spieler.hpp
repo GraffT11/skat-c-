@@ -88,6 +88,8 @@ class Spieler {
      * @returns Konstante Referenz auf den Vektor der Handkarten.
      */
     const std::vector<Karte>& getHand() const;
+
+    void reset();
 };
 
 #endif
