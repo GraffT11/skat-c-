@@ -16,7 +16,7 @@
  */
 int main() {
     std::cout << "Willkommen zum Skatspiel. Gespielt wird im Ramsch, das heisst: jeder gegen Jeden, Unter sind Trumpf "
-                 "und der Spieler, mit den meisten Punkten verliert das Spiel."
+                 "und der Spieler, mit den wenigsten Punkten gewinnt das Spiel."
               << std::endl;
     std::cout << "Unter stechen in der Reihenfolge: Eichel > Rot > Gruen > Schellen." << std::endl;
     std::cout << "Gut Blatt!\n" << std::endl;

@@ -21,7 +21,6 @@ void SkatSpiel::erstelleUndMischeDeck() {
 
 void SkatSpiel::verteileKarten() {
     skat.clear();
-    // Schleife auf size_t umgestellt
     for (size_t i = 0; i < 32; i++) {
         if (i < 30)
             spielerListe[i / 10].bekommtKarte(deck[i]);
@@ -115,9 +114,9 @@ int SkatSpiel::fordereKartenWahl(Spieler& s, const std::vector<Karte>& stich) {
                 valid = true;
             } else {
                 if (stich[0].getFarbeID() == 4) {
-                    std::cout << "Du musst Trumpf bedienen!\n\n";
+                    std::cout << "\nDu musst Trumpf bedienen!\n\n";
                 } else {
-                    std::cout << "Du musst " << stich[0].getFarbe() << " bedienen!\n\n";
+                    std::cout << "\nDu musst " << stich[0].getFarbe() << " bedienen!\n\n";
                 }
             }
         } else {
