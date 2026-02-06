@@ -23,7 +23,7 @@ class Spieler {
     /**
      * @brief Standardkonstruktor.
      *
-     * Erstellt einen Spieler mit dem Namen "Spieler" und mit leeren Kartenvektoren.
+     * Erstellt einen Spieler mit dem Namen "Unbekannt" und mit leeren Kartenvektoren.
      */
 
     Spieler();
