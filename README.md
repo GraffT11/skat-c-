@@ -9,3 +9,5 @@ Implementiert werden soll ein vereinfachtes Skatspiel, das
 • Prüft, ob die abzuwerfende Karte korrekt abgeworfen wurde, ¨
 • Herausfindet, wer den Stich gemacht hat,
 • Die neue Runde startet oder den Gewinner und die Punktzahlen der Spieler ausgibt.
+
+--> Projekt beendet und Prüfung bestanden
